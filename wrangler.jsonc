@@ -16,12 +16,7 @@
       "service": "ui-grvx"
     }
   ],
-  "r2_buckets": [
-    {
-      "binding": "NEXT_INC_CACHE_R2_BUCKET",
-      "bucket_name": "uigrvx-opennext-cache"
-    }
-  ],
+
   "images": {
     "binding": "IMAGES"
   },
