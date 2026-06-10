@@ -130,14 +130,14 @@ export function ProjectModal({ project, onClose, getProjectUrl }: ProjectModalPr
                   </div>
                 </div>
 
-                <div>
+                {/* <div>
                   <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
                     Deployment Domain
                   </span>
                   <p className="font-mono text-xs text-foreground mt-1 break-all bg-secondary/50 px-2.5 py-1.5 rounded border border-border/60">
                     {project.id}.pages.dev
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
