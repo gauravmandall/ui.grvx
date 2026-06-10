@@ -6,10 +6,13 @@ import type { Project } from "@/data/projects";
 interface ProjectModalProps {
   project: Project | null;
   onClose: () => void;
+  getProjectUrl?: (id: string) => string;
 }
 
-export function ProjectModal({ project, onClose }: ProjectModalProps) {
+export function ProjectModal({ project, onClose, getProjectUrl }: ProjectModalProps) {
   const [isMounted, setIsMounted] = useState(false);
+  const projectUrl = project && getProjectUrl ? getProjectUrl(project.id) : project ? `/${project.id}` : "";
+
 
   useEffect(() => {
     setIsMounted(true);
@@ -83,7 +86,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             {/* CTA Buttons */}
             <div className="space-y-2.5 pt-2">
               <a
-                href={`/${project.id}`}
+                href={projectUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center justify-center gap-2 w-full py-3 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white transition-colors text-xs font-bold uppercase tracking-wider text-decoration-none shadow-lg shadow-emerald-500/10"
@@ -175,7 +178,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             {/* Actions */}
             <div className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors">
               <a
-                href={`/${project.id}`}
+                href={projectUrl}
                 target="_blank"
                 rel="noreferrer"
                 title="Open in new tab"
@@ -191,7 +194,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
           {/* Iframe Viewport Container */}
           <div className="flex-1 relative bg-background overflow-hidden">
             <iframe
-              src={`/${project.id}`}
+              src={projectUrl}
               className="absolute inset-0 w-full h-full border-none bg-background pointer-events-auto"
               title={project.name}
             />

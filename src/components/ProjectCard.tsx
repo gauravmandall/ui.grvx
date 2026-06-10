@@ -6,11 +6,14 @@ import type { Project } from "@/data/projects";
 interface ProjectCardProps {
   project: Project;
   onSelect: (project: Project) => void;
+  getProjectUrl?: (id: string) => string;
 }
 
-export function ProjectCard({ project, onSelect }: ProjectCardProps) {
+export function ProjectCard({ project, onSelect, getProjectUrl }: ProjectCardProps) {
   const { id, name, description, category, tech, featured } = project;
   const [isHovered, setIsHovered] = useState(false);
+  const projectUrl = getProjectUrl ? getProjectUrl(id) : `/${id}`;
+
 
   // Determine gradient color based on category
   const getGradient = (cat: string) => {
@@ -67,7 +70,7 @@ export function ProjectCard({ project, onSelect }: ProjectCardProps) {
           {isHovered && (
             <div className="absolute inset-0 pt-7 bg-background z-10">
               <iframe
-                src={`/${id}`}
+                src={projectUrl}
                 loading="lazy"
                 className="absolute w-[300%] h-[300%] border-none pointer-events-none origin-top-left"
                 style={{

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -15,6 +15,23 @@ function ShowcaseContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [ports, setPorts] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === "development") {
+      fetch("/api/ports")
+        .then((res) => res.json())
+        .then((data) => setPorts(data))
+        .catch((err) => console.error("Failed to load ports config:", err));
+    }
+  }, []);
+
+  const getProjectUrl = (id: string) => {
+    if (process.env.NODE_ENV === "development" && ports[id]) {
+      return `http://localhost:${ports[id]}`;
+    }
+    return `/${id}`;
+  };
 
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -133,7 +150,7 @@ function ShowcaseContent() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {featuredProjects.map((project) => (
                       <div key={project.id} className="project-card-item opacity-0">
-                        <ProjectCard project={project} onSelect={setSelectedProject} />
+                        <ProjectCard project={project} onSelect={setSelectedProject} getProjectUrl={getProjectUrl} />
                       </div>
                     ))}
                   </div>
@@ -151,7 +168,7 @@ function ShowcaseContent() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {regularProjects.map((project) => (
                       <div key={project.id} className="project-card-item opacity-0">
-                        <ProjectCard project={project} onSelect={setSelectedProject} />
+                        <ProjectCard project={project} onSelect={setSelectedProject} getProjectUrl={getProjectUrl} />
                       </div>
                     ))}
                   </div>
@@ -183,7 +200,7 @@ function ShowcaseContent() {
         </footer>
       </main>
 
-      <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+      <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} getProjectUrl={getProjectUrl} />
     </div>
   );
 }
