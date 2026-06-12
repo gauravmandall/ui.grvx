@@ -1,17 +1,19 @@
 "use client";
-
+ 
 import { useEffect, useState } from "react";
 import type { Project } from "@/data/projects";
-
+import deploymentSummary from "@/data/deployment-summary.json";
+ 
 interface ProjectModalProps {
   project: Project | null;
   onClose: () => void;
   getProjectUrl?: (id: string) => string;
 }
-
+ 
 export function ProjectModal({ project, onClose, getProjectUrl }: ProjectModalProps) {
   const [isMounted, setIsMounted] = useState(false);
   const projectUrl = project && getProjectUrl ? getProjectUrl(project.id) : project ? `/${project.id}` : "";
+  const directUrl = project ? ((deploymentSummary as Record<string, string>)[project.id] || projectUrl) : "";
 
 
   useEffect(() => {
@@ -194,7 +196,7 @@ export function ProjectModal({ project, onClose, getProjectUrl }: ProjectModalPr
           {/* Iframe Viewport Container */}
           <div className="flex-1 relative bg-background overflow-hidden">
             <iframe
-              src={projectUrl}
+              src={directUrl}
               className="absolute inset-0 w-full h-full border-none bg-background pointer-events-auto"
               title={project.name}
             />

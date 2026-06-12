@@ -10,6 +10,9 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
+  "build": {
+    "command": "pnpm run build-cf"
+  },
   "services": [
     {
       "binding": "WORKER_SELF_REFERENCE",
